@@ -1,0 +1,45 @@
+KAFKA directory
+E:\Kafka\kafka_2.12-2.3.1\bin\windows
+
+--------------------------------------
+Check how to Setup
+https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot/blob/master/SetUpKafka.md
+
+---------------------------------------
+Starting zookeeper
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
+
+----------------------------------------
+
+Add these properties in server.properties file in config folder
+
+listeners=PLAINTEXT://localhost:9092
+auto.create.topics.enable=false
+
+It stops from creating topics automatically and keeps control
+
+----------------------------------------
+
+Start Kafka server
+
+kafka-server-start.bat ..\..\config\server.properties
+-----------------------------------------
+
+Create a topic
+
+kafka-topics.bat --create --topic test-topic -zookeeper localhost:2181 --replication-factor 1 --partitions 4
+-----------------------------------------
+
+Instantiating a producer
+
+kafka-console-producer.bat --broker-list localhost:9092 --topic test-topic
+
+-----------------------------------------
+
+Creating a consumer
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test-topic --from-beginning
+
+-----------------------------------------
+
+
