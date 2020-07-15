@@ -13,15 +13,17 @@ public class LibraryEvent {
 
 	private Integer libraryEventId;
 	private Book book;
+	private LibraryEventType libraryEventType;
 
 	public LibraryEvent() {
 		super();
 	}
 
-	public LibraryEvent(Integer libraryEventId, Book book) {
+	public LibraryEvent(Integer libraryEventId, Book book, LibraryEventType libraryEventType) {
 		super();
 		this.libraryEventId = libraryEventId;
 		this.book = book;
+		this.libraryEventType = libraryEventType;
 	}
 
 	@Override
@@ -35,6 +37,14 @@ public class LibraryEvent {
 
 	public void setLibraryEventId(Integer libraryEventId) {
 		this.libraryEventId = libraryEventId;
+	}
+
+	public LibraryEventType getLibraryEventType() {
+		return libraryEventType;
+	}
+
+	public void setLibraryEventType(LibraryEventType libraryEventType) {
+		this.libraryEventType = libraryEventType;
 	}
 
 	public Book getBook() {

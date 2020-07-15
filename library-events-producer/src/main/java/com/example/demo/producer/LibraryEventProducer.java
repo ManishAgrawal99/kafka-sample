@@ -11,9 +11,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.Header;
+import org.apache.kafka.common.header.internals.RecordHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +85,13 @@ public class LibraryEventProducer {
     
     private ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topic) {
 
-    	return new ProducerRecord<>(topic, null, key, value, null);
+    	List<Header> recordHeaders = new ArrayList<>();
+    	
+    	Header h1 = new RecordHeader("event-source", "scanner".getBytes());
+    	
+    	recordHeaders.add(h1);
+    	
+    	return new ProducerRecord<>(topic, null, key, value, recordHeaders);
 	}
 
 
