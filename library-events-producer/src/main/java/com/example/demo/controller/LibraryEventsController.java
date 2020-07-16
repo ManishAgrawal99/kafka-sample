@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,6 +54,22 @@ public class LibraryEventsController {
 		
 		logger.info("Send Result is {}", sendResult.toString());
 		
+		return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
+	}
+	
+	
+	@PutMapping("/v1/libraryEventSynchronous")
+	public ResponseEntity<?> putLibraryEventSynchronous(@RequestBody LibraryEvent libraryEvent) throws Exception{
+		
+		if (libraryEvent.getLibraryEventId() == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the LibraryEventID");
+		}
+		
+		libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
+		
+		//invoke kafka producer
+		System.out.println(libraryEvent);
+		libraryEventProducer.sendLibraryEvent_Approach2(libraryEvent);
 		return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
 	}
 	
