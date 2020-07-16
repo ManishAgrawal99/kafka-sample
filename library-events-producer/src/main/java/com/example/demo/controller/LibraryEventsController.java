@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
+
+
 @RestController
 public class LibraryEventsController {
 	
@@ -26,7 +29,7 @@ public class LibraryEventsController {
 	LibraryEventProducer libraryEventProducer;
 	
 	@PostMapping("/v1/libraryEvent")
-	public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libraryEvent) throws JsonProcessingException{
+	public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException{
 		
 		libraryEvent.setLibraryEventType(LibraryEventType.NEW);
 		
