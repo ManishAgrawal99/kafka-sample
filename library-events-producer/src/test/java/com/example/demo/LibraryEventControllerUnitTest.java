@@ -48,4 +48,24 @@ public class LibraryEventControllerUnitTest {
 		
 		mockMvc.perform(post("/v1/libraryEvent").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
 	}
+	
+	@Test
+	void postLibraryEvent_4XX() throws Exception {
+		
+		//given
+		Book book = new Book(null, null, "Kafka using Spring Boot");
+		
+		LibraryEvent libraryEvent = new LibraryEvent(null, null, null);
+		
+		String json = objectMapper.writeValueAsString(libraryEvent);
+		
+		//doNothing().when(libraryEventProducer).sendLibraryEvent_Approach2();
+		
+		//When
+		
+		mockMvc.perform(post("/v1/libraryEventSynchronous")
+						.content(json)
+						.contentType(MediaType.APPLICATION_JSON))
+						.andExpect(status().is4xxClientError());
+	}
 }
