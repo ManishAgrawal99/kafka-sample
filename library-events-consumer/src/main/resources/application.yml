@@ -13,7 +13,12 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: library-events-listener-group
-      
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: SpringKafka 
+     
 ---
 
 spring:

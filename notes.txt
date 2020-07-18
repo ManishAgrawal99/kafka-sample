@@ -20,7 +20,7 @@ It stops from creating topics automatically and keeps control
 
 ----------------------------------------
 
-Start Kafka server
+Start Kafka server (broker)
 
 kafka-server-start.bat ..\..\config\server.properties
 -----------------------------------------
