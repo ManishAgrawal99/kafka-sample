@@ -1,5 +1,8 @@
 package com.example.demo.config;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +15,8 @@ import org.springframework.kafka.listener.ContainerProperties;
 @EnableKafka
 public class LibraryEventsConsumerConfig {
 
+	Logger logger = LoggerFactory.getLogger(LibraryEventsConsumerConfig.class);
+	
 	@Bean
 	ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
 			ConcurrentKafkaListenerContainerFactoryConfigurer configurer,
@@ -23,6 +28,10 @@ public class LibraryEventsConsumerConfig {
 		//factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
 		
 		factory.setConcurrency(5);
+		
+		factory.setErrorHandler((thrownException, data)->{
+			logger.info("Exception in ConsumerConfig is {} and the record is {}", thrownException.getMessage(),data));
+		});
 		
 		return factory;
 	}
