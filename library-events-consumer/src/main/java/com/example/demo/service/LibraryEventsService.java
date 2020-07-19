@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
+import javax.validation.constraints.Null;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Book;
@@ -36,6 +39,10 @@ public class LibraryEventsService {
 		LibraryEvent libraryEvent = objectMapper.readValue(consumerRecord.value(), LibraryEvent.class);
 		
 		logger.info("LibraryEvent: {}", libraryEvent);
+		
+		if(libraryEvent.getLibraryEventId() != null) {
+			throw new RecoverableDataAccessException("Temporary Network issue");
+		}
 		
 		switch (libraryEvent.getLibraryEventType()) {
 		case NEW:

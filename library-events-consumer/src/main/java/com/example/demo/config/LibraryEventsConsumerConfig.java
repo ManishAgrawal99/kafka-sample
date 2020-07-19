@@ -1,11 +1,15 @@
 package com.example.demo.config;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -54,8 +58,15 @@ public class LibraryEventsConsumerConfig {
 	}
 	
 	private RetryPolicy simpleRetryPolicy() {
-		SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
-		simpleRetryPolicy.setMaxAttempts(3);
+//		SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
+//		simpleRetryPolicy.setMaxAttempts(3);
+		
+		Map<Class<? extends Throwable>, Boolean> exceptionsMap = new HashMap<>();
+		
+		exceptionsMap.put(IllegalArgumentException.class, false);
+		exceptionsMap.put(RecoverableDataAccessException.class, true);
+		
+		SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy(3, exceptionsMap, true);
 		return simpleRetryPolicy();
 	}
 }
